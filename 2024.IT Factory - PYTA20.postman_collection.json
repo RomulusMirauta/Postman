@@ -1,0 +1,424 @@
+{
+	"info": {
+		"_postman_id": "ac022d0d-0c82-435f-a58d-ddc8562cdf67",
+		"name": "IT Factory - PYTA20",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20608349"
+	},
+	"item": [
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "all products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://dummyjson.com/products",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all products skip & limit",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://dummyjson.com/products?limit=15&skip=5",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "15"
+								},
+								{
+									"key": "skip",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://dummyjson.com/products/20",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"products",
+								"20"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://dummyjson.com/products/search?q=phone&limit=5",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"products",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "phone"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add a new product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Produs nou\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://dummyjson.com/products/add",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"products",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update a product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Titlu nou\",\r\n    \"price\": 203.23\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://dummyjson.com/products/3",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"products",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete a product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://dummyjson.com/products/20",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"products",
+								"20"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://dummyjson.com/users",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all users skip & limit",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://dummyjson.com/users?limit=15&skip=5",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "15"
+								},
+								{
+									"key": "skip",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://dummyjson.com/users/20",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"users",
+								"20"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://dummyjson.com/users/search?q=Michael&limit=5",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"users",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "Michael"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add a new user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"firstName\": \"Jean-Claude\",\r\n        \"lastName\": \"Van Damme\",\r\n        \"age\": 63,\r\n        \"gender\": \"male\",\r\n        \"email\": \"jcvd@gmail.com\",\r\n        \"password\": \"x[|Zb2JX-Rcz\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://dummyjson.com/users/add",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"users",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update a user",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"firstName\": \"Jean-Claude\",\r\n        \"lastName\": \"Van Damme\",\r\n        \"age\": 63,\r\n        \"gender\": \"male\",\r\n        \"email\": \"jcvd@gmail.com\",\r\n        \"password\": \"x[|Zb2JX-Rcz\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://dummyjson.com/users/3",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"users",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete a user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://dummyjson.com/users/20",
+							"protocol": "https",
+							"host": [
+								"dummyjson",
+								"com"
+							],
+							"path": [
+								"users",
+								"20"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_URL_products",
+			"value": "https://dummyjson.com/products",
+			"type": "string"
+		},
+		{
+			"key": "base_URL_users",
+			"value": "https://dummyjson.com/users",
+			"type": "string"
+		}
+	]
+}

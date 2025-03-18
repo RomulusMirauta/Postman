@@ -1,0 +1,776 @@
+{
+	"info": {
+		"_postman_id": "dc44c4ce-853d-4cb9-b4d2-3107674b8664",
+		"name": "2023",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20608349"
+	},
+	"item": [
+		{
+			"name": "Beginning",
+			"item": [
+				{
+					"name": "http://httpbin.org/",
+					"item": [
+						{
+							"name": "Tests GET",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function (){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"//parsing the response Body in order to make any assertions on it\r",
+											"let jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Your test name1\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"    pm.expect(jsonData.args.isGood).to.eql('true');\r",
+											"    pm.expect(jsonData.args.isBad).to.eql('false');\r",
+											"});\r",
+											"\r",
+											"//double-check\r",
+											"pm.test(\"TEST-CHECK: 'Your test name1'\", function () {\r",
+											"    pm.response.to.not.have.status(401); //401=Unauthorized\r",
+											"    pm.expect(jsonData.args.isGood).to.not.eql('false');\r",
+											"    pm.expect(jsonData.args.isBad).to.not.eql('true');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://httpbin.org/get?isGood=true&isBad=false",
+									"protocol": "http",
+									"host": [
+										"httpbin",
+										"org"
+									],
+									"path": [
+										"get"
+									],
+									"query": [
+										{
+											"key": "isGood",
+											"value": "true"
+										},
+										{
+											"key": "isBad",
+											"value": "false"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Tests POST",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let date = Date.now(); //current timestamp\r",
+											"//console.log(date);\r",
+											"//pm.globals.set(\"currentDate\", date);\r",
+											"pm.collectionVariables.set(\"currentDate\", date);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"\r",
+											"let jsonData = pm.response.json();\r",
+											"//var=old; let=new, modern; JS standards\r",
+											"\r",
+											"/*\r",
+											"pm.test(\"Your test name1\", function () {\r",
+											"    //var jsonData = pm.response.json(); //variables declared inside a function can only be used inside the function\r",
+											"    pm.expect(jsonData.json.currentDate).to.eql(pm.globals.get(\"currentDate\"));\r",
+											"});\r",
+											"*/\r",
+											"\r",
+											"\r",
+											"//rewritten; reason: removing global variable \"currentDate\" and adding a collection variable with the same name - in P-R S\r",
+											"pm.test(\"Your test name1\", function () {\r",
+											"    //var jsonData = pm.response.json(); //variables declared inside a function can only be used inside the function\r",
+											"    pm.expect(jsonData.json.currentDate).to.eql(pm.collectionVariables.get(\"currentDate\"));\r",
+											"});\r",
+											"\r",
+											"\r",
+											"//pm.globals.get(\"currentDate\");\r",
+											"\r",
+											"\r",
+											"console.log(jsonData.json.permissions);\r",
+											"console.log(typeof jsonData.json.permissions);\r",
+											"console.log(jsonData.json.permissions[2]); //how to manipulate the elements of an array; array = Data Structure; an array is an object\r",
+											"\r",
+											"\r",
+											"pm.test(\"Your test name2\", function () {\r",
+											"    //var jsonData = pm.response.json(); //variables declared inside a function can only be used inside the function\r",
+											"    pm.expect(jsonData.json.permissions[3]).to.eql(4000);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Your test name3\", function () {\r",
+											"    pm.expect(jsonData.json.permissions).to.include(4000);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"echo_off\",\r\n    \"permissions\": [2000,3000,3001,4000],\r\n    \"currentDate\": {{currentDate}}\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://httpbin.org/post",
+									"protocol": "http",
+									"host": [
+										"httpbin",
+										"org"
+									],
+									"path": [
+										"post"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Tests PUT",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function (){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Content-Type is application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql('application/json');\r",
+											"});\r",
+											"\r",
+											"//always check if the test fails when using wrong values\r",
+											"pm.test(\"TEST-CHECK: Content-Type is NOT application/jsonx\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.not.eql('application/jsonx');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "echo_off",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "echo_off@example.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://httpbin.org/put",
+									"protocol": "http",
+									"host": [
+										"httpbin",
+										"org"
+									],
+									"path": [
+										"put"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Tests DELETE",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function (){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"//double-check if resource still exists after executing DELETE method\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "echo_off",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "echo_off@example.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://httpbin.org/delete",
+									"protocol": "http",
+									"host": [
+										"httpbin",
+										"org"
+									],
+									"path": [
+										"delete"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "ASANA",
+					"item": [
+						{
+							"name": "Asana API interaction M1",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "None",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://app.asana.com/api/1.0/workspaces",
+									"protocol": "https",
+									"host": [
+										"app",
+										"asana",
+										"com"
+									],
+									"path": [
+										"api",
+										"1.0",
+										"workspaces"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Asana API interaction M2",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "None",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://app.asana.com/api/1.0/workspaces",
+									"protocol": "https",
+									"host": [
+										"app",
+										"asana",
+										"com"
+									],
+									"path": [
+										"api",
+										"1.0",
+										"workspaces"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Asana API interaction M3",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token_Asana}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://app.asana.com/api/1.0/workspaces",
+									"protocol": "https",
+									"host": [
+										"app",
+										"asana",
+										"com"
+									],
+									"path": [
+										"api",
+										"1.0",
+										"workspaces"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Asana API interaction M3 TEST",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function (){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token_Asana}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://app.asana.com/api/1.0/workspaces",
+									"protocol": "https",
+									"host": [
+										"app",
+										"asana",
+										"com"
+									],
+									"path": [
+										"api",
+										"1.0",
+										"workspaces"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Asana API interaction ID1",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token_Asana}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "My first task1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://app.asana.com/api/1.0/workspaces/1203669484134470/tasks",
+									"protocol": "https",
+									"host": [
+										"app",
+										"asana",
+										"com"
+									],
+									"path": [
+										"api",
+										"1.0",
+										"workspaces",
+										"1203669484134470",
+										"tasks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Asana API interaction ID2",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token_Asana}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "My first task2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://app.asana.com/api/1.0/workspaces/{{ID_Asana}}/tasks",
+									"protocol": "https",
+									"host": [
+										"app",
+										"asana",
+										"com"
+									],
+									"path": [
+										"api",
+										"1.0",
+										"workspaces",
+										"{{ID_Asana}}",
+										"tasks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Asana API interaction ID3",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token_Asana}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "My first task3",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://app.asana.com/api/1.0/workspaces/:ID_workspace/tasks",
+									"protocol": "https",
+									"host": [
+										"app",
+										"asana",
+										"com"
+									],
+									"path": [
+										"api",
+										"1.0",
+										"workspaces",
+										":ID_workspace",
+										"tasks"
+									],
+									"variable": [
+										{
+											"key": "ID_workspace",
+											"value": "1203669484134470"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Asana API interaction ID3 TEST",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function (){\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token_Asana}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "My first task3",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://app.asana.com/api/1.0/workspaces/:ID_workspace/tasks",
+									"protocol": "https",
+									"host": [
+										"app",
+										"asana",
+										"com"
+									],
+									"path": [
+										"api",
+										"1.0",
+										"workspaces",
+										":ID_workspace",
+										"tasks"
+									],
+									"variable": [
+										{
+											"key": "ID_workspace",
+											"value": "1203669484134470"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "OTHERS",
+					"item": [
+						{
+							"name": "Google Search",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "google.com/search?q=postman",
+									"host": [
+										"google",
+										"com"
+									],
+									"path": [
+										"search"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": "postman"
+										},
+										{
+											"key": "lang",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TEST2023",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"class Rectangle {\r",
+											"  constructor(height, width) {\r",
+											"    this.height = height;\r",
+											"    this.width = width;\r",
+											"  }\r",
+											"}\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "TESTING",
+			"item": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token_Asana",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ID_Asana",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "currentDate",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

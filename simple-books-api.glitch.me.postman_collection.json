@@ -1,0 +1,1802 @@
+{
+	"info": {
+		"_postman_id": "9770f908-8bbc-4c61-a96d-731e3afaec61",
+		"name": "simple-books-api.glitch.me",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20608349"
+	},
+	"item": [
+		{
+			"name": "Part I",
+			"item": [
+				{
+					"name": "Check API Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//PM Test Method1\r",
+									"pm.test(\"Status code is 200, M1\", function (){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"//PM Test Method2\r",
+									"pm.test(\"Status code is 200, M2\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/*\r",
+									"const response = pm.response.json(); //parsing the response json into a JS object\r",
+									"console.log(response);\r",
+									"console.log(typeof response); //the type of response is a JavaScript Object\r",
+									"*/\r",
+									"\r",
+									"/*\r",
+									"//method1\r",
+									"const response = pm.response.json();\r",
+									"console.log(response.status); \r",
+									"*/\r",
+									"\r",
+									"//method2\r",
+									"const response = pm.response.json();\r",
+									"console.log(response['status']); //to use when dealing with special characters - that would break the syntax\r",
+									"\r",
+									"/*\r",
+									"pm.test(\"Status should be OK\", () => {\r",
+									"    pm.expect(1).to.eql(1);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status should be OK\", () => {\r",
+									"    pm.expect(1).to.eql(2);\r",
+									"});\r",
+									"*/\r",
+									"\r",
+									"pm.test(\"Status should be OK\", () => {\r",
+									"    pm.expect(response.status).to.eql('OK');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//postman.setNextRequest(\"List of books\"); //M1: skip to selected request\r",
+									"\r",
+									"//postman.setNextRequest(null); //M2: STOP\r",
+									"//can be used for loops - Collection Runner"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/status",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List of books",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function (){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/books",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List of books Query Params",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function (){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"//console.log(response); //array, contains multiple objects\r",
+									"//console.log(typeof response);\r",
+									"//console.log(response[1].id);\r",
+									"\r",
+									"//show in console: first available book that has the non-fiction type\r",
+									"const nonFiction = response.filter((book) => book.available === true);\r",
+									"console.log(nonFiction[0]);\r",
+									"\r",
+									"//show in console: first unavailable book that has the non-fiction type\r",
+									"const custom1 = response.filter((book) => book.available === false);\r",
+									"console.log(custom1[0]);\r",
+									"\r",
+									"//show in console: the book that has a specific name\r",
+									"const custom2 = response.filter((book) => book.name === 'Untamed');\r",
+									"console.log(custom2[0]);\r",
+									"\r",
+									"\r",
+									"//pm.collectionVariables.set(\"bookID\", nonFiction[0].id); //M1\r",
+									"\r",
+									"const book = nonFiction[0];\r",
+									"pm.test('Book found', () => {\r",
+									"    pm.expect(book).to.be.an('object');\r",
+									"    //pm.expect(book.available).to.eql(true);\r",
+									"    pm.expect(book.available).to.be.true;\r",
+									"    pm.expect(book.type).to.eql(\"non-fiction\");\r",
+									"});\r",
+									"\r",
+									"//pm.collectionVariables.set(\"bookID\", book.id); //M2\r",
+									"\r",
+									"//M3\r",
+									"if (book) {\r",
+									"    pm.collectionVariables.set(\"bookID\", book.id); //a way to get around the JS error that would occur if: modifying \"book.available === true\" to\r",
+									"                                                   //\"book.available === 111\" and using \"M2\"\r",
+									"};"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/books?type=non-fiction",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"books"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "non-fiction"
+								},
+								{
+									"key": "limit",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Specific book1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function (){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/books/:bookID",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"books",
+								":bookID"
+							],
+							"variable": [
+								{
+									"key": "bookID",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Specific book2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function (){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/books/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"books",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Specific book3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function (){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Is in stock\", () => {\r",
+									"    pm.expect(response['current-stock']).to.be.above(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/books/:bookID",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"books",
+								":bookID"
+							],
+							"variable": [
+								{
+									"key": "bookID",
+									"value": "{{bookID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "API Authentication1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Checking if the access token has already been created\", function (){\r",
+									"    pm.response.to.have.status(409);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"clientName\": \"Postman\",\r\n   \"clientEmail\": \"echo_off299@example.com\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api-clients",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api-clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order book1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function (){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bookId\": 1,\r\n    \"customerName\": \"echo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/orders",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order book2 no-stock",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function (){\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bookId\": 2,\r\n    \"customerName\": \"echo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/orders",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order book3 randomFullName",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function (){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bookId\": 1,\r\n    \"customerName\": \"{{$randomFullName}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/orders",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order book3.1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function (){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bookId\": {{bookID}},\r\n    \"customerName\": \"{{$randomFullName}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/orders",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View all book orders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function (){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/orders",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View specific book order1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function (){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/orders/:orderId",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"orders",
+								":orderId"
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "SjB-heChpPzhmWZfd4cnx"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update specific book order1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function (){\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customerName\": \"echo_off\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/orders/:orderId",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"orders",
+								":orderId"
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "SjB-heChpPzhmWZfd4cnx"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete specific book order1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function (){\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/orders/:orderId",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"orders",
+								":orderId"
+							],
+							"variable": [
+								{
+									"key": "orderId",
+									"value": "SjB-heChpPzhmWZfd4cnx"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Part II",
+			"item": [
+				{
+					"name": "Single book order",
+					"item": [
+						{
+							"name": "API Authentication2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Checking if the access token has already been created\", function (){\r",
+											"    pm.response.to.have.status(409);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json();\r",
+											"//console.log(response.accessToken);\r",
+											"\r",
+											"//pm.collectionVariables.set(\"accessToken\", response.accessToken);\r",
+											"\r",
+											"\r",
+											"if (pm.collectionVariables.get(\"accessToken\") == ('null')){\r",
+											"    pm.collectionVariables.set(\"accessToken\", response.accessToken);\r",
+											"};"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"clientName\": \"Postman\",\r\n   \"clientEmail\": \"echo_off2999@example.com\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api-clients",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api-clients"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Order book4",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function (){\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json();\r",
+											"//console.log(response.orderId);\r",
+											"\r",
+											"pm.collectionVariables.set(\"latestOrderID\", response.orderId);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"bookId\": 1,\r\n    \"customerName\": \"echo_off29\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/orders",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View all book orders",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function (){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/orders",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View specific book order2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function (){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/orders/:orderId",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"orders",
+										":orderId"
+									],
+									"variable": [
+										{
+											"key": "orderId",
+											"value": "{{latestOrderID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update specific book order2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 204\", function (){\r",
+											"    pm.response.to.have.status(204);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"customerName\": \"[UPDATED] echo_off29\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/orders/:orderId",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"orders",
+										":orderId"
+									],
+									"variable": [
+										{
+											"key": "orderId",
+											"value": "{{latestOrderID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check PATCH effect",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function (){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Check PATCH effect\", function () {\r",
+											"    pm.expect(response.customerName).to.eql(\"[UPDATED] echo_off29\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/orders/:orderId",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"orders",
+										":orderId"
+									],
+									"variable": [
+										{
+											"key": "orderId",
+											"value": "{{latestOrderID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete specific book order2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 204\", function (){\r",
+											"    pm.response.to.have.status(204);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/orders/:orderId",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"orders",
+										":orderId"
+									],
+									"variable": [
+										{
+											"key": "orderId",
+											"value": "{{latestOrderID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check DELETE effect",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 404\", function (){\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/orders/:orderId",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"orders",
+										":orderId"
+									],
+									"variable": [
+										{
+											"key": "orderId",
+											"value": "{{latestOrderID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "ALL book orders",
+					"item": [
+						{
+							"name": "API Authentication3",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Checking if the access token has already been created\", function (){\r",
+											"    pm.response.to.have.status(409);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json();\r",
+											"//console.log(response.accessToken);\r",
+											"\r",
+											"pm.collectionVariables.set(\"accessToken\", response.accessToken);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"accessToken\", \"b86933874dd71e30bdad05d97d40c45a00c706622c9f677046f63c880ef39b28\");"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"clientName\": \"Postman\",\r\n   \"clientEmail\": \"ALL_echo_off299@example.com\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/api-clients",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api-clients"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Order multiple books",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function (){\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json();\r",
+											"//console.log(response.orderId);\r",
+											"\r",
+											"pm.collectionVariables.set(\"latestOrderID\", response.orderId);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"bookId\": 1,\r\n    \"customerName\": \"echo_off29\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/orders",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View ALL book orders",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function (){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/orders",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Stock ALL IDs of orders",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function (){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/orders",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update ALL book orders",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 204\", function (){\r",
+											"    pm.response.to.have.status(204);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"customerName\": \"[UPDATED] echo_off29\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/orders/:orderId",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"orders",
+										":orderId"
+									],
+									"variable": [
+										{
+											"key": "orderId",
+											"value": "{{latestOrderID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check PATCH ALL effect",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function (){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Check PATCH effect\", function () {\r",
+											"    pm.expect(response.customerName).to.eql(\"[UPDATED] echo_off29\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/orders/:orderId",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"orders",
+										":orderId"
+									],
+									"variable": [
+										{
+											"key": "orderId",
+											"value": "{{latestOrderID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete ALL book orders",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 204\", function (){\r",
+											"    pm.response.to.have.status(204);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"/*\r",
+											"const i = \"zNgT_ABuSFcqoplE3ijRy\";\r",
+											"pm.collectionVariables.set(\"bookID.all\", i);\r",
+											"*/"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/orders/:orderId",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"orders",
+										":orderId"
+									],
+									"variable": [
+										{
+											"key": "orderId",
+											"value": "{{bookID.all}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check DELETE & LOOP",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function (){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"//response Body: []\r",
+											"\r",
+											"const response = pm.response.json();\r",
+											"\r",
+											"/*\r",
+											"pm.test(\"Check DELETE ALL effect\", function () {\r",
+											"    pm.expect(response).to.be.empty;\r",
+											"});\r",
+											"*/\r",
+											"\r",
+											"\r",
+											"/*\r",
+											"//while?\r",
+											"if (pm.collectionVariables.get(\"remainingBooks\") == 0) {\r",
+											"    postman.setNextRequest(\"Delete ALL book orders\"); \r",
+											"} else {\r",
+											"    pm.test(\"Check DELETE ALL effect V2\", function () { //still executing hmm\r",
+											"    pm.expect(response).to.be.empty;\r",
+											"});\r",
+											"};\r",
+											"*/\r",
+											"\r",
+											"let i = 0;\r",
+											"//let count = response[i].id;\r",
+											"let count = response[i].id;\r",
+											"\r",
+											"//console.log(response[0].id);\r",
+											"console.log(count);\r",
+											"\r",
+											"/*\r",
+											"i+=1\r",
+											"count = response[i].id;\r",
+											"console.log(count);\r",
+											"*/\r",
+											"\r",
+											"\r",
+											"/*\r",
+											"while (count != 0, i=i+1){\r",
+											"    count = response[i].id;\r",
+											"    console.log(count);\r",
+											"};\r",
+											"*/\r",
+											"\r",
+											"\r",
+											"/*\r",
+											"while (i=i+1){\r",
+											"    count.exists();\r",
+											"    //assert.exists(count, 'htjrftjtr');\r",
+											"    count = response[i].id;\r",
+											"    console.log(count);\r",
+											"};\r",
+											"*/\r",
+											"\r",
+											"\r",
+											"//pm.collectionVariables.set(\"remainingBooks\") = response.id[1];\r",
+											"\r",
+											"\r",
+											"if (pm.collectionVariables.get(\"remainingBooks\") > 0) {\r",
+											"    postman.setNextRequest(\"Delete ALL book orders\"); \r",
+											"} else {\r",
+											"    postman.setNextRequest(\"Check DELETE ALL effect\");\r",
+											"};"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/orders",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check DELETE ALL effect",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function (){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Check DELETE ALL effect\", function () {\r",
+											"    pm.expect(response).to.be.empty;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/orders",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://simple-books-api.glitch.me",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "c8da04a8752445376342cb1c2b0d694ad83d885166b294f347d36221cc2c0e46",
+			"type": "string"
+		},
+		{
+			"key": "latestOrderID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "bookID",
+			"value": ""
+		},
+		{
+			"key": "bookID.all",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "bookID1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "bookID2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "bookID3",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "remainingBooks",
+			"value": "3",
+			"type": "string"
+		}
+	]
+}
